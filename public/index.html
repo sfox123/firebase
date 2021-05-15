@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome to Firebase Hosting</title>
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/8.6.1/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/8.6.1/firebase-auth.js"></script>
+    <script defer src="/__/firebase/8.6.1/firebase-database.js"></script>
+    <script defer src="/__/firebase/8.6.1/firebase-firestore.js"></script>
+    <script defer src="/__/firebase/8.6.1/firebase-functions.js"></script>
+    <script defer src="/__/firebase/8.6.1/firebase-messaging.js"></script>
+    <script defer src="/__/firebase/8.6.1/firebase-storage.js"></script>
+    <script defer src="/__/firebase/8.6.1/firebase-analytics.js"></script>
+    <script defer src="/__/firebase/8.6.1/firebase-remote-config.js"></script>
+    <script defer src="/__/firebase/8.6.1/firebase-performance.js"></script>
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+  </head>
+  <body>
+    <h1>Hey Are you working ? Yes I am</h1>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const loadEl = document.querySelector('#load');
+        try {
+          let app = firebase.app();
+          let features = [
+            'auth', 
+            'database', 
+            'firestore',
+            'functions',
+            'messaging', 
+            'storage', 
+            'analytics', 
+            'remoteConfig',
+            'performance',
+          ].filter(feature => typeof app[feature] === 'function');
+          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
+        } catch (e) {
+          console.error(e);
+          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
+        }
+      });
+    </script>
+  </body>
+</html>
