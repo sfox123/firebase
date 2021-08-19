@@ -1,12 +1,15 @@
 require("./model/User");
+require("./model/Asc");
+require("./model/Editor");
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const cors = require("cors");
+const cors = require("cors")({ origin: true });
 const auth = require("./routes/authRoutes");
 const real = require("./routes/realRoutes");
+const editor = require("./routes/editor");
 const Weather = require("./model/Weather");
 const requireAuth = require("./middleware/requireAuth");
 const excelRoute = require("./routes/excelData");
@@ -35,6 +38,7 @@ mongoose.connection.on("error", (err) => {
 
 app.use(real);
 app.use(auth);
+app.use(editor);
 app.use(excelRoute);
 app.get("/", (req, res) => {
   res.send("Weather Details On the Way 2.0");
