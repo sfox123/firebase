@@ -3,12 +3,13 @@ const router = express();
 const mongoose = require("mongoose");
 const ASC = mongoose.model("Asc");
 const { google } = require("googleapis");
+const { GoogleAuth } = require("google-auth-library");
 
 const client_id =
   "812288491953-orae0m8b5qovgb0h1uiviv5c42l8buql.apps.googleusercontent.com";
 const client_secret = "Ji2K_CJC2uGbYiy5GsdRa0vx";
 const refresh_token =
-  "1//04bFCqzE8wnW6CgYIARAAGAQSNwF-L9IrwHAKcXQZe84WD2s0LMW36YkYSAi_mnysrdPk9vkXF-QGraoWdpU-uIARnKQQci5jcpc";
+  "1//04hHXFuWrrlQVCgYIARAAGAQSNwF-L9IrbgHKhMaaskeITkmSmsmDzMLGJ4H93asYBxE8DmVxEtzS3uHWPv_bS3elTuNIv-cPgkc";
 const redirect_uris = "https://developers.google.com/oauthplayground";
 
 const oauth2Client = new google.auth.OAuth2(
@@ -25,6 +26,29 @@ const drive = google.drive({
 });
 
 //Sheet Auth
+
+router.get("/getGraph", async (req, res) => {
+  try {
+    const auth = new GoogleAuth({
+      keyFile: "credentials.json",
+      scopes: "https://www.googleapis.com/auth/spreadsheets",
+    });
+
+    const client = await auth.getClient();
+    const googleSheets = google.sheets({ version: "v4", auth: client });
+    const sheetID = "1xpm1j5pulQFL4GPeU8LLsp74UeHymHytJEO1olDCzn0";
+    const getRows = await googleSheets.spreadsheets.values.get({
+      auth,
+      spreadsheetId: sheetID,
+      range: "Daily Rainfall",
+    });
+    const Arr = getRows.data.values;
+    Arr.splice(0, 4);
+    res.send(Arr);
+  } catch (error) {
+    console.error(error);
+  }
+});
 
 router.get("/apiCall", (req, res) => {
   const asc = ASC.find()
@@ -64,7 +88,7 @@ router.post("/apiCall/:admin/:pass", async (req, res) => {
 
   //Drive
 
-  drive.files.create(
+  await drive.files.create(
     {
       requestBody: {
         name: admin + "_ASC",

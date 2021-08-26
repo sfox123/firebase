@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>DashBoard</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <ul>
+          <li class="header__list">
+            <a class="header__link" href="#">
+              <p class="header__span">Emergency News</p>
+              <span style="font-size: 2px">last updated 01/02/2021</span>
+            </a>
+          </li>
+          <li class="header__list">
+            <a class="header__link" href="#">
+              <p class="header__span">Weather Warnings</p>
+              <span style="font-size: 2px">last updated 01/02/2021</span></a
+            >
+          </li>
+          <li class="header__list">
+            <a class="header__link" href="#">
+              <p class="header__span">Landslide Warnings</p>
+              <span style="font-size: 2px">last updated 01/02/2021</span>
+            </a>
+          </li>
+          <li class="header__list">
+            <a class="header__link" href="#">
+              <p class="header__span">Emergency Contacts</p>
+              <span style="font-size: 2px">last updated 01/02/2021</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="tab">
+        <ul>
+          <li id="flood" class="tab__link choosen">Flood Map</li>
+          <li id="slide" class="tab__link">Landslide Map</li>
+          <li id="land" class="tab__link">Multiple Hazard Map</li>
+          <li id="boat" class="tab__link">Resource Map</li>
+        </ul>
+      </div>
+      <div class="map">
+        <img class="map__stage" src="./img/Maps/flood.JPG" alt="floodMap" />
+      </div>
+      <div class="footer">
+        <div class="footer__title">
+          <h1 class="title__links">Usefull links</h1>
+        </div>
+        <div class="footer__body">
+          <ul>
+            <li>
+              <a
+                href="https://www.meteo.gov.lk/"
+                target="_blank"
+                class="footer__link"
+              >
+                <img class="footer__img" src="./img/CLOUD LOGO_7.png" alt="1" />
+                <p class="link__text">Department of Metereology</p>
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.irrigation.gov.lk/"
+                target="_blank"
+                class="footer__link"
+                ><img
+                  class="footer__img"
+                  src="./img/CLOUD LOGO_5.png"
+                  alt="1"
+                />
+                <p class="link__text">Department of Irrigation</p>
+              </a>
+            </li>
+            <li>
+              <a
+                href="http://www.gsmb.gov.lk/"
+                target="_blank"
+                class="footer__link"
+                ><img
+                  class="footer__img"
+                  src="./img/CLOUD LOGO_3.png"
+                  alt="1"
+                />
+                <p class="link__text">Geological Survey & Mines Bureau</p>
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.dmc.gov.lk/"
+                target="_blank"
+                class="footer__link"
+                ><img class="footer__img" src="./img/CLOUD LOGO.png" alt="1" />
+                <p class="link__text">Disaster Management Center</p></a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.epid.gov.lk/web/"
+                target="_blank"
+                class="footer__link"
+                ><img
+                  class="footer__img"
+                  src="./img/CLOUD LOGO_6.png"
+                  alt="1"
+                />
+                <p class="link__text">Epidemiology Unit</p></a
+              >
+            </li>
+            <li>
+              <a
+                href="http://www.statistics.gov.lk/"
+                target="_blank"
+                class="footer__link"
+                ><img class="footer__img" src="./img/census.png" alt="1" />
+                <p class="link__text">Census and Statistics</p></a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.nbro.gov.lk/index.php?lang=en"
+                target="_blank"
+                class="footer__link"
+                ><img
+                  class="footer__img"
+                  src="./img/CLOUD LOGO_4.png"
+                  alt="1"
+                />
+                <p class="link__text">
+                  National Building Resource Management
+                </p></a
+              >
+            </li>
+            <li>
+              <a
+                href="http://www.health.gov.lk/moh_final/english/"
+                target="_blank"
+                class="footer__link"
+                ><img
+                  class="footer__img"
+                  src="./img/CLOUD LOGO_7.png"
+                  alt="1"
+                />
+                <p class="link__text">Ministry of Health</p></a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.survey.gov.lk/sdweb/home.php"
+                target="_blank"
+                class="footer__link"
+                ><img class="footer__img" src="./img/survey.png" alt="1" />
+                <p class="link__text">Survey Department</p></a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="social__media" style="margin-top: 3rem">
+          <div class="footer__title">
+            <h1 class="title__links">Social Media links</h1>
+          </div>
+          <div class="footer__body">
+            <ul>
+              <li>
+                <a
+                  href="https://www.facebook.com/SLMetDept/"
+                  target="_blank"
+                  class="footer__link"
+                >
+                  <img class="fb" src="./img/fb.png" alt="fb" />
+                  <p>Department of Metereology - Sri Lanka</p>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.facebook.com/dmc.gov.lk/"
+                  target="_blank"
+                  class="footer__link"
+                >
+                  <img class="fb" src="./img/fb.png" alt="fb" />
+                  <p>DMC Sri Lanka - Home</p>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.facebook.com/pages/category/Government-Organization/National-Building-Research-Organization-_Ratnapura-101514048171110/"
+                  target="_blank"
+                  class="footer__link"
+                >
+                  <img class="fb" src="./img/fb.png" alt="fb" />
+                  <p>National Building Resource Organization</p>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"
+  ></script>
+  <script src="./app.js"></script>
+</html>

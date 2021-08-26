@@ -6,16 +6,19 @@ const admin = require("firebase-admin");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const cors = require("cors")({ origin: true });
+const cors = require("cors");
 const auth = require("./routes/authRoutes");
 const real = require("./routes/realRoutes");
 const editor = require("./routes/editor");
+const viewer = require("./routes/Viewer");
 const Weather = require("./model/Weather");
 const requireAuth = require("./middleware/requireAuth");
 const excelRoute = require("./routes/excelData");
-
+const weatherRoute = require("./routes/WeatherRoutes");
+const path = require("path");
 const app = express();
 app.use(cors({ origin: true }));
+
 admin.initializeApp(functions.config().firebase);
 const db = admin.firestore();
 const mongoURi =
@@ -35,10 +38,13 @@ mongoose.connection.on("connected", () => {
 mongoose.connection.on("error", (err) => {
   console.error(err);
 });
+app.use(express.static(__dirname + "/RP"));
 
 app.use(real);
 app.use(auth);
 app.use(editor);
+app.use(viewer);
+app.use(weatherRoute);
 app.use(excelRoute);
 app.get("/", (req, res) => {
   res.send("Weather Details On the Way 2.0");
@@ -63,6 +69,10 @@ app.get("/getMongo/:id", (req, res) => {
     const el = req.params.id.toString();
     res.send(data[el]);
   });
+});
+
+app.get("/dashboard", (req, res) => {
+  res.sendFile(path.join(__dirname + "/RP/index.html"));
 });
 
 app.get("/Auth", requireAuth, (req, res) => {

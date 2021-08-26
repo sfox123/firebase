@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const User = mongoose.model("User");
 const ASC = mongoose.model("Asc");
+const Editor = mongoose.model("Editor");
 const router = express.Router();
 
 router.get("/users", async (req, res) => {
@@ -35,7 +36,16 @@ router.post("/signin", async (req, res) => {
   if (!user) {
     const asc = await ASC.findOne({ email });
     if (!asc) {
-      return res.status(500).send({ error: "Email not found" });
+      const editor = await Editor.findOne({ email });
+      if (!editor) {
+        return res.status(500).send({ error: "Email not found" });
+      }
+      try {
+        await editor.comparePassword(password);
+        res.send({ editor });
+      } catch (error) {
+        return res.status(422).send({ error: "Invalid Password or Email" });
+      }
     }
     try {
       await asc.comparePassword(password);

@@ -17,6 +17,9 @@ const editorSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "ASC",
   },
+  sheetName: {
+    type: String,
+  },
   sheetID: {
     type: String,
   },

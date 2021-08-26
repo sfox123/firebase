@@ -14,11 +14,11 @@ router.get("/weatherAPI", async (req, res) => {
   $(document).ready(function () {
     function test(str, callback) {
       $.ajax({
-        url: "https://us-central1-express-439e0.cloudfunctions.net/app/apiCall",
+        url: "http://us-central1-express-439e0.cloudfunctions.net/app/getGraph",
         type: "GET",
         dataType: "JSON",
         success: function (data) {
-          callback(data.values);
+          callback(data);
         },
       });
     }
