@@ -23,7 +23,7 @@ ul {
 .container {
   margin-top: 2rem;
   display: grid;
-  grid-template-rows: 12rem;
+  grid-template-rows: 10rem;
   grid-template-columns: 0fr;
   place-content: center;
 }
@@ -33,7 +33,7 @@ ul {
 }
 .header > ul {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 .header > ul > li {
@@ -79,6 +79,7 @@ ul {
   color: black;
 }
 .tab {
+  margin-top: 2rem;
   background-color: rgb(31, 31, 31);
 }
 
