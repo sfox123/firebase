@@ -145,6 +145,8 @@ router.post("/apiCall/:admin/:pass", async (req, res) => {
                           console.error(err);
                           res.send(err).status(422);
                         } else {
+                          userAC.archive = finale.data.id;
+                          userAC.save();
                           res.send("Success").status(200);
                           await drive.permissions.create({
                             fileId: file.data.id,

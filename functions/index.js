@@ -1,5 +1,6 @@
 require("./model/User");
 require("./model/Asc");
+require("./model/Advisory");
 require("./model/Editor");
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
