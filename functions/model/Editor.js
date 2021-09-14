@@ -18,10 +18,17 @@ const editorSchema = new mongoose.Schema({
     ref: "ASC",
   },
   sheetName: {
-    type: String,
+    type: Array,
+    default: [],
   },
   sheetID: {
     type: String,
+  },
+  rainFall: {
+    type: Array,
+  },
+  tankWater: {
+    type: Array,
   },
   station: {
     type: String,

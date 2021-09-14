@@ -27,40 +27,45 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/signin", async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(422).send({ error: "Must Provide a Password" });
-  }
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
-  if (!user) {
-    const asc = await ASC.findOne({ email });
-    if (!asc) {
-      const editor = await Editor.findOne({ email });
-      if (!editor) {
-        return res.status(500).send({ error: "Email not found" });
+    if (!email || !password) {
+      return res.status(422).send({ error: "Must Provide a Password" });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      const asc = await ASC.findOne({ email });
+      if (!asc) {
+        const editor = await Editor.findOne({ email });
+        if (!editor) {
+          return res.status(500).send({ error: "Email not found" });
+        }
+        try {
+          await editor.comparePassword(password);
+          res.send({ editor });
+        } catch (error) {
+          return res.status(422).send({ error: "Invalid Password or Email" });
+        }
       }
       try {
-        await editor.comparePassword(password);
-        res.send({ editor });
+        await asc.comparePassword(password);
+        res.send({ asc });
       } catch (error) {
         return res.status(422).send({ error: "Invalid Password or Email" });
       }
     }
+
     try {
-      await asc.comparePassword(password);
-      res.send({ asc });
+      await user.comparePassword(password);
+      const token = jwt.sign({ userId: user._id }, "123");
+      res.send({ user });
     } catch (error) {
       return res.status(422).send({ error: "Invalid Password or Email" });
     }
-  }
-
-  try {
-    await user.comparePassword(password);
-    const token = jwt.sign({ userId: user._id }, "123");
-    res.send({ user });
   } catch (error) {
-    return res.status(422).send({ error: "Invalid Password or Email" });
+    console.log(error);
   }
 });
 

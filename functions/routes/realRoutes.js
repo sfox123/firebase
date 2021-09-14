@@ -45,14 +45,15 @@ router.post("/getFile", async (req, res) => {
     var matches = file.match(/^data:.+\/(.+);base64,(.*)$/);
     var ext = matches[1];
     var base64_data = matches[2];
+    const filePath = path.resolve(__dirname.replace("routes", "file.docx"));
     var buffer = new Buffer.alloc(size, base64_data, "base64");
-    fs.writeFileSync("file" + `.${"docx"}`, buffer, function (err) {
-      res.send("success");
+    fs.writeFile(filePath, buffer, (err) => {
+      // res.send("Success");
+      console.log(err);
     });
     const user = await ASC.findById(asc);
     const { archive, email } = user;
     const date = new Date();
-    const filePath = path.resolve(__dirname.replace("routes", "file.docx"));
     const response = await drive.files.create({
       requestBody: {
         name: `${email}_Advisory_${date.toLocaleDateString()}.docx`,

@@ -12,6 +12,9 @@ const ascSchema = new mongoose.Schema({
   rainFall: { type: String },
   tankWater: { type: String },
   archive: { type: String },
+  district: {
+    type: Array,
+  },
   password: {
     type: String,
     required: true,
