@@ -10,20 +10,14 @@ const { GoogleAuth } = require("google-auth-library");
 
 const admin = require("firebase-admin");
 
-const client_id =
-  "812288491953-orae0m8b5qovgb0h1uiviv5c42l8buql.apps.googleusercontent.com";
-const client_secret = "Ji2K_CJC2uGbYiy5GsdRa0vx";
-const refresh_token =
-  "1//04Mx_tOWkGa70CgYIARAAGAQSNwF-L9IrUBPXo8ugbXY-vUuPxStjdBIV9sS3tEN4-5b28QxTBc3fVn3qXMIoa8Gsdia2l3S8FRY";
-const redirect_uris = "https://developers.google.com/oauthplayground";
+const keyFile = "drive.json";
 
-const oauth2Client = new google.auth.OAuth2(
-  client_id,
-  client_secret,
-  redirect_uris
-);
+const scopes = ["https://www.googleapis.com/auth/drive"];
 
-oauth2Client.setCredentials({ refresh_token: refresh_token });
+const oauth2Client = new GoogleAuth({
+  keyFile: keyFile,
+  scopes: scopes,
+});
 
 const drive = google.drive({
   version: "v3",
