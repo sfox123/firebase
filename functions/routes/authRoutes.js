@@ -69,25 +69,30 @@ router.post("/signin", async (req, res) => {
   }
 });
 
-router.post("/users/:id", async (req, res) => {
+router.post("/users/:name", async (req, res) => {
   try {
-    const { password } = req.body
+    const { password } = req.body;
+    const { name } = req.params;
 
     if (!password) {
       return res.status(422).send({ error: "Must Provide a Password" });
     }
 
-    const user = await User.findById(req.params.id);
+    const user = await Editor.findOne({ email: name });
+
     if (!user) {
       return res.status(500).send({ error: "User not found" });
     }
 
-    user.password = password
-    await user.save()
+    user.password = password;
+    user.decoded = password;
 
-    res.status(200)
+    await user.save();
+
+    res.status(200).send("Success");
   } catch (error) {
     return res.status(422).send(error.message);
+    console.log(error);
   }
 });
 
