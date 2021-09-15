@@ -69,4 +69,26 @@ router.post("/signin", async (req, res) => {
   }
 });
 
+router.post("/users/:id", async (req, res) => {
+  try {
+    const { password } = req.body
+
+    if (!password) {
+      return res.status(422).send({ error: "Must Provide a Password" });
+    }
+
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(500).send({ error: "User not found" });
+    }
+
+    user.password = password
+    await user.save()
+
+    res.status(200)
+  } catch (error) {
+    return res.status(422).send(error.message);
+  }
+});
+
 module.exports = router;
