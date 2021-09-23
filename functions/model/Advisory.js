@@ -11,6 +11,9 @@ const advisorySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "ASC",
   },
+  author: {
+    type: String,
+  },
 });
 
 mongoose.model("Advisory", advisorySchema);
