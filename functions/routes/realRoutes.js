@@ -70,7 +70,7 @@ router.post("/getFile", async (req, res) => {
       link: `https://docs.google.com/document/d/${response.data.id}`,
       name: `${email}_Advisory_${date.toLocaleDateString()}.docx`,
       asc: asc,
-      author: email.split("-")[0].trim(),
+      author: email.split("-")[0],
     });
     await content.save();
     res.send("Success").status(200);
