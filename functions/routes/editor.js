@@ -6,8 +6,48 @@ const Editor = mongoose.model("Editor");
 const Asc = mongoose.model("Asc");
 const { google } = require("googleapis");
 const { GoogleAuth } = require("google-auth-library");
-const e = require("express");
-
+const alpha = [
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+];
+var mS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 const auth = new GoogleAuth({
   keyFile: "credentials.json",
   scopes: "https://www.googleapis.com/auth/spreadsheets",
@@ -178,19 +218,9 @@ router.post("/editorCall/station", async (req, res) => {
       },
     });
     // adding excel to master file
-    const monthArr = [];
-    for (let i = 0; i < 28; i++) {
-      if (i === 0) {
-        monthArr.push(sheet);
-      }
-      if (i === 1) {
-        monthArr.push(lat);
-      }
-      if (i === 2) {
-        monthArr.push(lon);
-      }
-
-      monthArr.push(" ");
+    const monthArr = [sheet, lat, lon];
+    for (let i = 0; i < 24; i++) {
+      monthArr.push(0);
     }
 
     await googleSheets.spreadsheets.values
@@ -216,7 +246,7 @@ router.post("/editorCall/Data/:id", async (req, res) => {
 
     const foundOne = await Editor.findById(editor);
     const { email } = foundOne;
-    console.log(id);
+
     await googleSheets.spreadsheets.values.append({
       auth,
       spreadsheetId: id,
@@ -266,6 +296,40 @@ router.post("/editorCall/DataTank", async (req, res) => {
             `${email}`,
           ],
         ],
+      },
+    });
+    const getValues = await googleSheets.spreadsheets.values.get({
+      auth,
+      spreadsheetId: `1QzLYOrijo-dZJNh9Qs_jiB1RuruGsljyYYqRXoSQ3ms`,
+      range: "2021",
+    });
+    const Arr = getValues.data.values;
+
+    console.log(mS[date.split(" ")[1]]);
+    let dateArr = mS.indexOf(date.split(" ")[1]) + 1;
+    let monthIndex = 0;
+    let valueIndex = 0;
+    let avg = 0;
+
+    if (parseInt(date.split(" ")[2]) > 15) {
+      monthIndex = dateArr * 2 + 1;
+    } else {
+      monthIndex = dateArr * 2;
+    }
+    Arr.map((x, i) => {
+      if (x[0] === sheet) {
+        valueIndex = i;
+        avg = parseInt(waterLevel) / 15 + parseInt(x[monthIndex + 1]);
+      }
+    });
+
+    await googleSheets.spreadsheets.values.update({
+      auth,
+      spreadsheetId: `1QzLYOrijo-dZJNh9Qs_jiB1RuruGsljyYYqRXoSQ3ms`,
+      range: `2021!${alpha[monthIndex + 1]}${valueIndex + 1}`,
+      valueInputOption: "USER_ENTERED",
+      resource: {
+        values: [[avg.toFixed(2)]],
       },
     });
 
