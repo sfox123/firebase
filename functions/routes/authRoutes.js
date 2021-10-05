@@ -78,16 +78,18 @@ router.post("/users/:name", async (req, res) => {
       return res.status(422).send({ error: "Must Provide a Password" });
     }
 
-    const user = await Editor.findOne({ email: name });
+    let user = await Editor.findOne({ email: name });
 
     if (!user) {
-      return res.status(500).send({ error: "User not found" });
+      let user = await ASC.findOne({ email: name });
+      if (!user) {
+        return res.status(500).send({ error: "User not found" });
+      }
+      user.password = password;
+      user.decoded = password;
+
+      await user.save();
     }
-
-    user.password = password;
-    user.decoded = password;
-
-    await user.save();
 
     res.status(200).send("Success");
   } catch (error) {

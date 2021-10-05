@@ -156,26 +156,51 @@ router.post("/editorCall/station", async (req, res) => {
     } catch (error) {
       res.send(error).status(422);
     }
+    await googleSheets.spreadsheets.values.append({
+      auth,
+      spreadsheetId: sheetID,
+      range: `${sheet}!A:B`,
+      valueInputOption: "USER_ENTERED",
+      resource: {
+        values: [
+          ["Station Name", `${sheet}`],
+          ["Longitute", `${lon}`],
+          ["Latitute", `${lon}`],
+          ["", "", ""],
+          [
+            "Date (entered)",
+            "Date (measured)",
+            "Water Level(ft)",
+            "Capacity (Ac.ft)",
+            "Officer",
+          ],
+        ],
+      },
+    });
+    // adding excel to master file
+    const monthArr = [];
+    for (let i = 0; i < 28; i++) {
+      if (i === 0) {
+        monthArr.push(sheet);
+      }
+      if (i === 1) {
+        monthArr.push(lat);
+      }
+      if (i === 2) {
+        monthArr.push(lon);
+      }
+
+      monthArr.push(" ");
+    }
+
     await googleSheets.spreadsheets.values
       .append({
         auth,
-        spreadsheetId: sheetID,
-        range: `${sheet}!A:B`,
+        spreadsheetId: `1QzLYOrijo-dZJNh9Qs_jiB1RuruGsljyYYqRXoSQ3ms`,
+        range: `2021!A:B`,
         valueInputOption: "USER_ENTERED",
         resource: {
-          values: [
-            ["Station Name", `${sheet}`],
-            ["Longitute", `${lon}`],
-            ["Latitute", `${lon}`],
-            ["", "", ""],
-            [
-              "Date (entered)",
-              "Date (measured)",
-              "Water Level(ft)",
-              "Capacity (Ac.ft)",
-              "Officer",
-            ],
-          ],
+          values: [monthArr],
         },
       })
       .catch((err) => console.error(err));

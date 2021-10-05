@@ -90,12 +90,20 @@ router.post("/apiCall/:admin/:pass", async (req, res) => {
       },
       fields: "id",
     },
-    (err, file) => {
+    async (err, file) => {
       if (err) {
         console.error(err);
       } else {
         userAC.file = file.data.id;
         userAC.save();
+        await drive.permissions.create({
+          fileId: file.data.id,
+          requestBody: {
+            emailAddress: "agrometadvisorylk@gmail.com",
+            role: "writer",
+            type: "user",
+          },
+        });
         drive.files.create(
           {
             requestBody: {

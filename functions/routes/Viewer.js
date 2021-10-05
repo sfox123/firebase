@@ -4,6 +4,7 @@ const router = express.Router();
 const { google } = require("googleapis");
 const { GoogleAuth } = require("google-auth-library");
 const Asc = mongoose.model("Asc");
+const Editor = mongoose.model("Editor");
 
 const client_id =
   "812288491953-orae0m8b5qovgb0h1uiviv5c42l8buql.apps.googleusercontent.com";
@@ -70,6 +71,20 @@ router.get("/getMaster", async (req, res) => {
   } catch (error) {
     res.send(err).status(422);
     console.log(error);
+  }
+});
+
+router.get("/getRowMaster", async (req, res, next) => {
+  try {
+    const client = await auth.getClient();
+    const googleSheets = google.sheets({ version: "v4", auth: client });
+
+    await googleSheets.spreadsheets.create({});
+
+    res.send(dataField).status(200);
+  } catch (error) {
+    console.log(error);
+    res.send(error).status(422);
   }
 });
 
