@@ -79,9 +79,31 @@ router.get("/getRowMaster", async (req, res, next) => {
     const client = await auth.getClient();
     const googleSheets = google.sheets({ version: "v4", auth: client });
 
-    await googleSheets.spreadsheets.create({});
+    const getRow = await googleSheets.spreadsheets.values.get({
+      auth,
+      spreadsheetId: `1QzLYOrijo-dZJNh9Qs_jiB1RuruGsljyYYqRXoSQ3ms`,
+      range: "2021",
+    });
 
-    res.send(dataField).status(200);
+    res.send(getRow.data.values).status(200);
+  } catch (error) {
+    console.log(error);
+    res.send(error).status(422);
+  }
+});
+
+router.get("/getRainMaster", async (req, res, next) => {
+  try {
+    const client = await auth.getClient();
+    const googleSheets = google.sheets({ version: "v4", auth: client });
+
+    const getRow = await googleSheets.spreadsheets.values.get({
+      auth,
+      spreadsheetId: `1z_GnYRfXM-KveUH0sFe73hfIZwdhnoxW4FRM4f2xA7g`,
+      range: "2021",
+    });
+
+    res.send(getRow.data.values).status(200);
   } catch (error) {
     console.log(error);
     res.send(error).status(422);

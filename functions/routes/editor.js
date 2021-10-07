@@ -167,23 +167,40 @@ router.post("/editorCall/station", async (req, res) => {
     } catch (error) {
       res.send(error).status(422);
     }
+    await googleSheets.spreadsheets.values.append({
+      auth,
+      spreadsheetId: sheetID,
+      range: `${sheet}!A:B`,
+      valueInputOption: "USER_ENTERED",
+      resource: {
+        values: [
+          ["Station Name", `${sheet}`],
+          ["Longitute", `${lon}`],
+          ["Latitute", `${lat}`],
+          ["", "", ""],
+          ["Date (entered)", "Date (measured)", "RainFall(mm)", "Officer"],
+        ],
+      },
+    });
+    // adding excel to master file
+    const monthArr = [`${sheet}-${district}`, lat, lon];
+    for (let i = 0; i < 12; i++) {
+      monthArr.push(0);
+    }
+
     await googleSheets.spreadsheets.values
       .append({
         auth,
-        spreadsheetId: sheetID,
-        range: `${sheet}!A:B`,
+        spreadsheetId: `1z_GnYRfXM-KveUH0sFe73hfIZwdhnoxW4FRM4f2xA7g`,
+        range: `2021!A:B`,
         valueInputOption: "USER_ENTERED",
         resource: {
-          values: [
-            ["Station Name", `${sheet}`],
-            ["Longitute", `${lon}`],
-            ["Latitute", `${lat}`],
-            ["", "", ""],
-            ["Date (entered)", "Date (measured)", "RainFall(mm)", "Officer"],
-          ],
+          values: [monthArr],
         },
       })
+
       .catch((err) => console.error(err));
+    //1z_GnYRfXM-KveUH0sFe73hfIZwdhnoxW4FRM4f2xA7g
   }
 
   if (stationName == "tankWater") {
@@ -218,7 +235,7 @@ router.post("/editorCall/station", async (req, res) => {
       },
     });
     // adding excel to master file
-    const monthArr = [sheet, lat, lon];
+    const monthArr = [`${sheet}-${district}`, lat, lon];
     for (let i = 0; i < 24; i++) {
       monthArr.push(0);
     }
@@ -264,6 +281,34 @@ router.post("/editorCall/Data/:id", async (req, res) => {
       },
     });
 
+    const getValues = await googleSheets.spreadsheets.values.get({
+      auth,
+      spreadsheetId: `1z_GnYRfXM-KveUH0sFe73hfIZwdhnoxW4FRM4f2xA7g`,
+      range: "2021",
+    });
+    const Arr = getValues.data.values;
+
+    console.log(mS[date.split(" ")[1]]);
+    let dateArr = mS.indexOf(date.split(" ")[1]);
+    let valueIndex = 0;
+    let avg = 0;
+
+    Arr.map((x, i) => {
+      if (x[0] === sheet) {
+        valueIndex = i;
+        avg = parseInt(rainfall) + parseInt(x[dateArr + 3]);
+      }
+    });
+
+    await googleSheets.spreadsheets.values.update({
+      auth,
+      spreadsheetId: `1z_GnYRfXM-KveUH0sFe73hfIZwdhnoxW4FRM4f2xA7g`,
+      range: `2021!${alpha[dateArr + 3]}${valueIndex + 1}`,
+      valueInputOption: "USER_ENTERED",
+      resource: {
+        values: [[avg]],
+      },
+    });
     res.sendStatus(200);
   } catch (error) {
     console.log(error);
