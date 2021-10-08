@@ -405,31 +405,28 @@ router.post("/getRecords", async (req, res) => {
           })
           .then(({ data }) => {
             Data.rainfall.push({ ...data.values });
+          });
+      });
+    }
+
+    if (tankWater[0]) {
+      tank.map(async (x, i) => {
+        await googleSheets.spreadsheets.values
+          .get({
+            auth,
+            spreadsheetId: tankWater[1],
+            range: x,
           })
-          .finally((final) => {
-            if (tankWater[0]) {
-              tank.map(async (x, i) => {
-                await googleSheets.spreadsheets.values
-                  .get({
-                    auth,
-                    spreadsheetId: tankWater[1],
-                    range: x,
-                  })
-                  .then(({ data }) => {
-                    Data.tankwater.push({ ...data.values });
-                  })
-                  .catch((err) => console.error(err))
-                  .finally((response) => {
-                    res.send(Data);
-                  });
-              });
-            } else {
-              res.send(Data);
-            }
+          .then(({ data }) => {
+            Data.tankwater.push({ ...data.values });
           })
           .catch((err) => console.error(err));
       });
     }
+
+    setTimeout(() => {
+      res.send(Data);
+    }, 1500);
   } catch (error) {
     console.log(error);
   }
