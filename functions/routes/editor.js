@@ -288,13 +288,17 @@ router.post("/editorCall/Data/:id", async (req, res) => {
     });
     const Arr = getValues.data.values;
 
-    console.log(mS[date.split(" ")[1]]);
     let dateArr = mS.indexOf(date.split(" ")[1]);
     let valueIndex = 0;
     let avg = 0;
-
+    let name = "";
     Arr.map((x, i) => {
-      if (x[0] === sheet) {
+      try {
+        name = x[0].split("-")[0];
+      } catch (error) {
+        name = "alisa";
+      }
+      if (name === sheet) {
         valueIndex = i;
         avg = parseInt(rainfall) + parseInt(x[dateArr + 3]);
       }
@@ -355,6 +359,7 @@ router.post("/editorCall/DataTank", async (req, res) => {
     let monthIndex = 0;
     let valueIndex = 0;
     let avg = 0;
+    let name = "";
 
     if (parseInt(date.split(" ")[2]) > 15) {
       monthIndex = dateArr * 2 + 1;
@@ -362,7 +367,12 @@ router.post("/editorCall/DataTank", async (req, res) => {
       monthIndex = dateArr * 2;
     }
     Arr.map((x, i) => {
-      if (x[0] === sheet) {
+      try {
+        name = x[0].split("-")[0];
+      } catch (error) {
+        name = "alisa";
+      }
+      if (name === sheet) {
         valueIndex = i;
         avg = parseInt(waterLevel) / 15 + parseInt(x[monthIndex + 1]);
       }
@@ -425,6 +435,7 @@ router.post("/getRecords", async (req, res) => {
     }
 
     setTimeout(() => {
+      res.set("Access-Control-Allow-Origin", "*");
       res.send(Data);
     }, 1500);
   } catch (error) {

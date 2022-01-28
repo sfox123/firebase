@@ -27,10 +27,26 @@ const drive = google.drive({
 router.get("/getWeather/:id", (req, res) => {
   const id = req.params.id;
   var starCountRef = admin.database().ref(`agromet/${id}/links`);
+
   starCountRef.on("value", (snapshot) => {
     const data = snapshot.val();
     res.send(data);
   });
+});
+
+router.post("/MidRef", (req, res) => {
+  var starCountRef = admin.database().ref(`agromet/5/links/2`);
+
+  starCountRef
+    .update({ ref: "www.google.com" })
+    .then(() => {
+      return "Update Successful";
+      res.send("Updated").status(200);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send("Rejected").status(422);
+    });
 });
 
 router.post("/getFile", async (req, res) => {

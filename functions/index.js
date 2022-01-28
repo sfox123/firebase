@@ -2,6 +2,7 @@ require("./model/User");
 require("./model/Asc");
 require("./model/Advisory");
 require("./model/Editor");
+require("./model/WFP");
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const express = require("express");
@@ -10,6 +11,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const auth = require("./routes/authRoutes");
 const real = require("./routes/realRoutes");
+const wfp = require("./routes/wfp");
 const editor = require("./routes/editor");
 const viewer = require("./routes/Viewer");
 const Weather = require("./model/Weather");
@@ -45,9 +47,10 @@ app.use(real);
 app.use(auth);
 app.use(editor);
 app.use(viewer);
+app.use(wfp);
 app.use(weatherRoute);
 app.use(excelRoute);
-app.get("/", (req, res) => {
+app.get("/use", (req, res) => {
   res.send("Weather Details On the Way 2.0");
 });
 
@@ -79,5 +82,5 @@ app.get("/dashboard", (req, res) => {
 app.get("/Auth", requireAuth, (req, res) => {
   res.send(`Your email is ${req.user.email}`);
 });
-
+app.set("Access-Control-Allow-Origin", "*");
 exports.app = functions.https.onRequest(app);
